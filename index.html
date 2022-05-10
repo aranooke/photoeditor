@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!-- Compiled and minified CSS -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+     <!-- Compiled and minified JavaScript -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+        .img-bg {
+           
+            
+        }
+        img {
+            display: block;
+            
+        }
+        .filters {
+
+            display: none;
+            box-shadow: 0 0 10px 5px black;
+            width:500px;
+            margin-top: 40px;
+        }
+        .filters input {
+            display: block;
+            width:300px;
+            
+        }
+        .border-radius 
+        {
+            display:block;
+            width:400px;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <input placeholder="Введите URL картинки" type="text" id="input-img">
+    <h4>Сглаживание границ слоя</h4>
+    <input  class="border-radius" id = "border-radius" type="range" name="" id="">
+    <div class = "img-bg">
+        <img id = "img" src="" alt="">
+    </div>
+    <input type="color" name="" id="color">
+    <button class="btn filter">Фильтры</button>
+    <div class="filters">
+        
+        <br>
+
+    </div>
+    
+    <br>
+    
+    
+                
+</body>
+<script>
+    var [inputImg,img,color,border] = [document.querySelector("#input-img"),
+                                            document.querySelector("#img"),
+                                            document.querySelector("#color"),
+                                            document.querySelector("#border-radius")];
+    
+    function bgColor()
+    {
+        color.addEventListener("change",()=> {
+            img.style.backgroundColor = `${color.value}`;
+            console.log(color.value);
+        })
+        
+    }
+
+    function border_radius(){
+        border.addEventListener("change",()=>{
+            img.style.borderRadius = `${border.value}px`;
+            console.log(border.value);
+        })
+       
+    }
+    function onchange() {                                       
+        inputImg.addEventListener("change",()=>{
+            img.src = inputImg.value;
+        })
+    }
+    function changeFilter() 
+    {
+        
+        var filters = ["brightness","contrast","blurr","grayscale","hue_rotate","invert","opacity","saturate"];
+        var divFilters = document.querySelector(".filters");
+        for(let i = 0; i < filters.length;i++)
+        {
+            var input = document.createElement("input");
+            input.type = "range";
+            input.id = `${filters[i]}`;
+            input.className = `${filters[i]} filt filter${i}`;
+            divFilters.append(`${filters[i]}`,input);
+        }
+
+        function changeStyle()
+        {
+            var arr = new Map();
+            arr = [["brightness"],["contrast","%"],["blurr","px"],["grayscale","%"],["hue_rotate","deg"],["invert","%"],["opacity","%"],["saturate","%"]];
+            
+            console.log(arr[0][1]);
+            for(let i = 0;i < document.getElementsByClassName("filt").length;i++)
+            {
+                //  if(inputFilter[i].id == "hue_rotate")
+                // {
+                
+                // }
+                var inputFilters = document.getElementsByClassName("filt");
+                inputFilters[i].onchange = ()=> {
+                    img.style.filter = `${filters[i]}(${inputFilters[i].value * 3}%)`;
+                };
+                console.log(inputFilters[i]);
+            }
+            
+           
+        }
+
+
+
+        function checkToDisplayBlock()
+        {
+
+            var btn = document.querySelector(".filter");
+            var iterator = 2;
+            btn.addEventListener("click",()=>{
+                iterator % 2 == 0 ? divFilters.style.display = "block":divFilters.style.display = "none";
+                iterator++;
+            })
+        }
+
+        changeStyle();
+        checkToDisplayBlock()
+
+    }
+    
+
+    onchange();
+    border_radius();
+    changeFilter();
+    bgColor()
+                                            
+
+</script>
+</html>
